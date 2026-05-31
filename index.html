@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>免费证件照制作器 - 在线一键生成标准证件照 | ID Photo Maker</title>
+  <meta name="description" content="免费在线证件照制作工具，支持一寸、二寸、护照、签证等标准尺寸。智能背景移除，一键换底色（白底、蓝底、红底），A4排版打印。纯浏览器处理，无需注册，保护隐私。" />
+  <meta name="keywords" content="证件照,证件照制作,在线证件照,一寸照片,二寸照片,护照照片,签证照片,证件照换底色,白底证件照,蓝底证件照,红底证件照,免费证件照,ID photo" />
+  <meta name="author" content="tyr1105" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://tyr1105.github.io/idphoto-maker/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="免费证件照制作器 - 在线一键生成标准证件照" />
+  <meta property="og:description" content="免费在线证件照制作工具，智能背景移除，一键换底色，支持一寸二寸护照签证等标准尺寸，A4排版打印。" />
+  <meta property="og:url" content="https://tyr1105.github.io/idphoto-maker/" />
+  <meta property="og:site_name" content="在线工具箱" />
+  <meta property="og:locale" content="zh_CN" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="免费证件照制作器 - 在线一键生成标准证件照" />
+  <meta name="twitter:description" content="免费在线证件照制作工具，智能背景移除，一键换底色，支持多种标准尺寸。" />
+
+  <!-- JSON-LD 结构化数据 -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "证件照制作器",
+    "description": "免费在线证件照制作工具，支持一寸、二寸、护照、签证等标准尺寸。智能背景移除，一键换底色，A4排版打印。",
+    "url": "https://tyr1105.github.io/idphoto-maker/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "CNY"
+    },
+    "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas.",
+    "featureList": [
+      "Photo upload and crop",
+      "Smart background removal",
+      "Background color change (white, blue, red)",
+      "Standard ID photo sizes",
+      "A4 print layout",
+      "Download as PNG/JPG"
+    ]
+  }
+  </script>
+
+  <!-- 样式 -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ====== 头部导航 ====== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="./" class="site-logo">
+        <span class="logo-icon">📷</span>
+        <span>证件照制作器</span>
+      </a>
+      <div class="header-actions">
+        <span class="pro-badge" title="Pro 版即将推出">✨ Pro版</span>
+        <button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== 广告位 (顶部横幅) ====== -->
+  <div class="ad-slot" id="adSlotTop">
+    📢 广告位 (728×90) — 替换为实际广告代码
+  </div>
+
+  <!-- ====== 主内容 ====== -->
+  <main class="main-content">
+
+    <!-- 英雄区域 -->
+    <section class="hero-section">
+      <h1>免费在线证件照制作器</h1>
+      <p>上传照片，智能移除背景，一键生成标准证件照。支持白底、蓝底、红底，多种尺寸，A4排版打印。</p>
+      <div class="features-row">
+        <div class="feature-item">
+          <span class="feature-icon">🔒</span>
+          <span>纯浏览器处理</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">⚡</span>
+          <span>无需注册</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">💰</span>
+          <span>完全免费</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🛡️</span>
+          <span>隐私安全</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 操作步骤 -->
+    <div class="steps-bar">
+      <div class="step-item active">
+        <span class="step-num">1</span>
+        <span>上传照片</span>
+      </div>
+      <span class="step-arrow">›</span>
+      <div class="step-item">
+        <span class="step-num">2</span>
+        <span>移除背景</span>
+      </div>
+      <span class="step-arrow">›</span>
+      <div class="step-item">
+        <span class="step-num">3</span>
+        <span>选择底色/尺寸</span>
+      </div>
+      <span class="step-arrow">›</span>
+      <div class="step-item">
+        <span class="step-num">4</span>
+        <span>下载/打印</span>
+      </div>
+    </div>
+
+    <!-- 工作区 -->
+    <div class="workspace">
+
+      <!-- 左侧 - 画布区域 -->
+      <div class="canvas-area" style="position:relative;">
+
+        <!-- 加载覆盖层 -->
+        <div class="loading-overlay" id="loadingOverlay">
+          <div class="spinner"></div>
+          <div class="loading-text" id="loadingText">处理中...</div>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-icon">📁</div>
+          <h3>点击或拖拽上传照片</h3>
+          <p>支持 JPG、PNG、WebP、BMP 格式，最大 20MB</p>
+          <div class="upload-hint">建议使用纯色背景拍摄的照片，效果更佳</div>
+        </div>
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/bmp" hidden />
+
+        <!-- 画布容器 -->
+        <div class="canvas-wrapper" id="canvasWrapper">
+          <div class="canvas-container" id="canvasContainer">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+          <div class="canvas-info" id="canvasInfo">一寸 · 295×413px · 25×35mm</div>
+
+          <!-- 画布工具栏 -->
+          <div class="canvas-toolbar" id="canvasToolbar" style="display:none;">
+            <button class="btn btn-secondary btn-sm" id="btnReupload">📂 重新上传</button>
+            <button class="btn btn-primary btn-sm" id="btnRemoveBg">✂️ 智能抠图</button>
+            <button class="btn btn-secondary btn-sm" id="btnReset">🔄 还原原图</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧 - 设置面板 -->
+      <aside class="sidebar">
+
+        <!-- 证件照尺寸选择 -->
+        <div class="panel">
+          <div class="panel-title">
+            <span class="panel-icon">📐</span>
+            照片尺寸
+          </div>
+          <div class="size-grid" id="sizeGrid">
+            <div class="size-option active" data-size="one-inch">
+              <div class="size-name">一寸</div>
+              <div class="size-dim">25×35mm</div>
+            </div>
+            <div class="size-option" data-size="two-inch">
+              <div class="size-name">二寸</div>
+              <div class="size-dim">35×49mm</div>
+            </div>
+            <div class="size-option" data-size="small-one">
+              <div class="size-name">小一寸</div>
+              <div class="size-dim">22×32mm</div>
+            </div>
+            <div class="size-option" data-size="small-two">
+              <div class="size-name">小二寸</div>
+              <div class="size-dim">35×45mm</div>
+            </div>
+            <div class="size-option" data-size="passport">
+              <div class="size-name">护照</div>
+              <div class="size-dim">33×48mm</div>
+            </div>
+            <div class="size-option" data-size="visa">
+              <div class="size-name">签证</div>
+              <div class="size-dim">50×50mm</div>
+            </div>
+            <div class="size-option" data-size="custom">
+              <div class="size-name">自定义</div>
+              <div class="size-dim">自定义尺寸</div>
+            </div>
+          </div>
+
+          <!-- 自定义尺寸面板 -->
+          <div class="custom-size" id="customSizePanel">
+            <div class="custom-size-row">
+              <label>宽 (px)</label>
+              <input type="number" id="customWidth" value="295" min="10" max="2000" />
+            </div>
+            <div class="custom-size-row">
+              <label>高 (px)</label>
+              <input type="number" id="customHeight" value="413" min="10" max="2000" />
+            </div>
+            <button class="btn btn-primary btn-sm btn-block" id="btnApplyCustom">应用尺寸</button>
+          </div>
+        </div>
+
+        <!-- 背景色选择 -->
+        <div class="panel">
+          <div class="panel-title">
+            <span class="panel-icon">🎨</span>
+            背景颜色
+          </div>
+          <div class="color-options">
+            <button class="color-btn white active" data-color="white" title="白底">
+              <span class="color-label">白底</span>
+            </button>
+            <button class="color-btn blue" data-color="blue" title="蓝底">
+              <span class="color-label">蓝底</span>
+            </button>
+            <button class="color-btn red" data-color="red" title="红底">
+              <span class="color-label">红底</span>
+            </button>
+            <button class="color-btn gradient-blue" data-color="grad-blue" title="渐变蓝">
+              <span class="color-label">渐变蓝</span>
+            </button>
+            <button class="color-btn gradient-gray" data-color="grad-gray" title="渐变灰">
+              <span class="color-label">渐变灰</span>
+            </button>
+            <button class="color-btn transparent" data-color="transparent" title="透明">
+              <span class="color-label">透明</span>
+            </button>
+          </div>
+
+          <!-- 容差调节 -->
+          <div class="tolerance-control">
+            <label>
+              <span>抠图容差</span>
+              <span id="toleranceValue">30</span>
+            </label>
+            <input type="range" id="toleranceSlider" min="5" max="100" value="30" />
+          </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="panel">
+          <div class="panel-title">
+            <span class="panel-icon">💾</span>
+            导出照片
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-success btn-block" id="btnDownloadPng" disabled>
+              📥 下载 PNG（无损）
+            </button>
+            <button class="btn btn-primary btn-block" id="btnDownloadJpg" disabled>
+              📥 下载 JPG（压缩）
+            </button>
+            <button class="btn btn-secondary btn-block" id="btnPrintLayout" disabled>
+              🖨️ A4 排版打印
+            </button>
+          </div>
+
+          <!-- 打印排版信息 -->
+          <div class="print-layout-section">
+            <div class="print-info">
+              A4 排版将自动计算最佳排列，生成 300dpi 高清打印文件
+            </div>
+          </div>
+        </div>
+
+        <!-- 侧边栏广告位 -->
+        <div class="ad-slot ad-slot-sidebar">
+          📢 广告位 — 替换为实际广告代码
+        </div>
+      </aside>
+    </div>
+
+    <!-- 支持我们 -->
+    <section class="support-section">
+      <h3>☕ 支持我们</h3>
+      <p>这个工具完全免费，如果你觉得有用，可以通过以下方式支持我们继续开发更多工具！</p>
+      <div class="support-links">
+        <a href="#" class="btn btn-primary btn-sm" onclick="alert('感谢支持！赞助链接即将上线'); return false;">💰 赞助我们</a>
+        <a href="https://github.com/tyr1105" target="_blank" class="btn btn-secondary btn-sm">⭐ GitHub Star</a>
+        <a href="#" class="btn btn-secondary btn-sm" onclick="alert('分享链接即将上线'); return false;">📤 分享给朋友</a>
+      </div>
+    </section>
+
+    <!-- 底部广告位 -->
+    <div class="ad-slot">
+      📢 广告位 (728×90) — 替换为实际广告代码
+    </div>
+  </main>
+
+  <!-- ====== 打印排版弹窗 ====== -->
+  <div class="modal-overlay" id="printModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>🖨️ A4 排版预览</h2>
+        <button class="modal-close" id="btnModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="print-info" id="printInfo">A4 排版信息</div>
+        <div class="print-canvas-wrapper">
+          <canvas id="printCanvas"></canvas>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-success" id="btnDownloadPrint">📥 下载 A4 排版图</button>
+        <button class="btn btn-secondary" id="btnModalClose2" onclick="document.getElementById('printModal').classList.remove('visible')">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Toast 容器 ====== -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ====== 页脚 ====== -->
+  <footer class="site-footer">
+    <p>
+      <strong>证件照制作器</strong> · 纯浏览器端处理，您的照片不会上传到任何服务器
+    </p>
+    <p style="margin-top: 8px;">
+      <a href="https://tyr1105.github.io/" target="_blank">🏠 更多在线工具</a>
+      <a href="https://github.com/tyr1105" target="_blank">📂 GitHub</a>
+      <a href="#">隐私政策</a>
+      <a href="#">使用条款</a>
+    </p>
+    <p style="margin-top: 8px;">© 2024-2026 tyr1105. All rights reserved.</p>
+  </footer>
+
+  <!-- 应用逻辑 -->
+  <script src="app.js"></script>
+</body>
+</html>
